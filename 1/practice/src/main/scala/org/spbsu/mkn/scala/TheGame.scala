@@ -67,8 +67,6 @@ object TheGame {
         val secret = generateNumberString(length)
         println("I made a number. Try to guess it!")
 
-        println(secret)
-
         LazyList.from(1).foreach(step => {
             try {
                 val userInput = readLine(s"Enter your ($step) attempt: ")
