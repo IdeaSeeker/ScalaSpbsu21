@@ -13,7 +13,6 @@ object TheGame {
     class RepeatingDigitsException extends RuntimeException
     class WrongNumberLengthException(val expected: Int, val actual: Int) extends RuntimeException
 
-
     val defaultLength = 4
     val characters: String = ('0' to '9').mkString("") + ('A' to 'Z').mkString("")
 
@@ -57,7 +56,6 @@ object TheGame {
         }
         defaultLength
     }
-
 
     def main(args: Array[String]): Unit = {
         val name = readLine("Enter your name: ")
