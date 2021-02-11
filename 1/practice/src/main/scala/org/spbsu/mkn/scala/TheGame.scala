@@ -46,10 +46,10 @@ object TheGame {
     def readLength(): Int = {
         readLine("Enter the length of the number: ").toIntOption match {
             case None        =>
-                println("Length must be an integer")
+                println("Length must be an integer, so now the length = 4 (default value)")
             case Some(value) =>
                 if (value < 0) {
-                    println("Length must be a positive number")
+                    println("Length must be a positive number, so now the length = 4 (default value)")
                 }
                 else {
                     return value
