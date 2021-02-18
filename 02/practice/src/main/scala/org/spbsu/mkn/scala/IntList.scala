@@ -9,6 +9,7 @@ sealed trait IntList {
     def take(n: Int): IntList
     def map(f: Int => Int): IntList
     def ::(head: Int): IntList = IntCons(head, this)
+    def foldLeft(init: Int)(f: (Int, Int) => Int): Int
 }
 
 case object IntNil extends IntList {
@@ -27,6 +28,8 @@ case object IntNil extends IntList {
     }
 
     override def map(f: Int => Int): IntList = IntNil
+
+    override def foldLeft(init: Int)(f: (Int, Int) => Int): Int = init
 }
 
 case class IntCons(_head: Int, _tail: IntList) extends IntList {
@@ -44,27 +47,25 @@ case class IntCons(_head: Int, _tail: IntList) extends IntList {
         case n => IntCons(_head, _tail.take(n - 1))
     }
 
-    override def map(f: Int => Int): IntList = IntCons(f(_head), _tail.map(f))
-}
+    override def map(f: Int => Int): IntList =
+        IntCons(f(_head), _tail.map(f))
 
+    override def foldLeft(init: Int)(f: (Int, Int) => Int): Int =
+        _tail.foldLeft(f(init, _head))(f)
+}
 
 object IntList {
     def undef: Nothing =
         throw new UnsupportedOperationException("operation is undefined")
 
-    def fromSeq(seq: Seq[Int]): IntList = seq.size match {
-        case 0 => IntNil
-        case _ => IntCons(seq.head, fromSeq(seq.tail))
-    }
+    def fromSeq(seq: Seq[Int]): IntList =
+        seq.foldRight(IntNil: IntList)((head, tail) => head :: tail)
 
     def sum(intList: IntList): Int = intList match {
-        case IntNil                => undef
-        case IntCons(head, IntNil) => head
-        case IntCons(head, tail)   => head + sum(tail)
+        case IntNil  => undef
+        case intList => intList.foldLeft(0)((a, b) => a + b)
     }
 
-    def size(intList: IntList): Int = intList match {
-        case IntNil  => 0
-        case intList => sum(intList.map(_ => 1))
-    }
+    def size(intList: IntList): Int =
+        intList.foldLeft(0)((n, _) => n + 1)
 }
