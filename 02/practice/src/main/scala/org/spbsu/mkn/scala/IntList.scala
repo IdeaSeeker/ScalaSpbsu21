@@ -32,26 +32,24 @@ case object IntNil extends IntList {
     override def foldLeft(init: Int)(f: (Int, Int) => Int): Int = init
 }
 
-case class IntCons(_head: Int, _tail: IntList) extends IntList {
-    override def head: Int = _head
-
-    override def tail: IntList = _tail
+case class IntCons(override val head: Int,
+                   override val tail: IntList) extends IntList {
 
     override def drop(n: Int): IntList = n match {
         case 0 => this
-        case n => _tail.drop(n - 1)
+        case n => tail.drop(n - 1)
     }
 
     override def take(n: Int): IntList = n match {
         case 0 => IntNil
-        case n => IntCons(_head, _tail.take(n - 1))
+        case n => IntCons(head, tail.take(n - 1))
     }
 
     override def map(f: Int => Int): IntList =
-        IntCons(f(_head), _tail.map(f))
+        IntCons(f(head), tail.map(f))
 
     override def foldLeft(init: Int)(f: (Int, Int) => Int): Int =
-        _tail.foldLeft(f(init, _head))(f)
+        tail.foldLeft(f(init, head))(f)
 }
 
 object IntList {
