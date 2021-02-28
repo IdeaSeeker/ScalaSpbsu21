@@ -59,9 +59,9 @@ object MyGenericList {
     def fromSeq[T](seq: Seq[T]): MyGenericList[T] =
         seq.foldRight(MyNil: MyGenericList[T])((head, tail) => head :: tail)
 
-    def sum(myList: MyGenericList[Int]): Int = myList match {
+    def sum[U : Numeric](myList: MyGenericList[U]): U = myList match {
         case MyNil  => undef
-        case myList => myList.foldLeft(0 : Int)((a, b) => a + b)
+        case myList => myList.foldLeft(Numeric[U].zero)((a, b) => Numeric[U].plus(a, b))
     }
 
     def size(myList: MyGenericList[_]): Int =

@@ -42,8 +42,9 @@ class MyGenericListTest extends AnyFunSuite {
     }
 
     test("sum") {
-        assertThrows[UnsupportedOperationException](sum(MyNil))
+        assertThrows[UnsupportedOperationException](sum[Int](MyNil))
         assert(sum(fromSeq(Seq(1,2,3))) == 6)
+        assert((sum(fromSeq(Seq(1.1,2.2,3.3))) - 6.6).abs < 1e-9)
         assert(sum(fromSeq(Seq(1))) == 1)
     }
 
