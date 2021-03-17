@@ -72,7 +72,7 @@ object MyGenericList {
         myList.foldLeft(0)((n, _) => n + 1)
 
     def sort[T](list: MyGenericList[T])(implicit comparator: Ordering[T]): MyGenericList[T] = {
-        fromSeq(toSeq(list).sorted(comparator))
+        fromSeq(toSeq(list).sorted)
     }
 
 }
